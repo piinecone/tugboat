@@ -396,6 +396,7 @@ func buildContainer(env *Env, podName string, cluster *Cluster) error {
 				cluster.Context,
 				container.Specs.ContainerName,
 				cluster.URL,
+				cluster.AppEnv,
 				env.Prefix,
 				env.GCloudProjectID,
 				cluster.Registry,
