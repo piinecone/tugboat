@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CONTAINER_NAME=$1
-PROJECT_PREFIX=$2
+GCLOUD_PROJECT_ID=$2
 REGISTRY=$3
 
 ./scripts/start_docker.sh
@@ -13,12 +13,12 @@ LATEST_TAG="latest"
 docker login -e hughes.nick@gmail.com -u _token -p "$(gcloud auth print-access-token)" https://$REGISTRY
 # docker rmi $(docker images | grep none | awk {'print $3'})
 
-echo "Pushing image $REGISTRY/$PROJECT_PREFIX/$CONTAINER_NAME:$LATEST_TAG..."
+echo "Pushing image $REGISTRY/$GCLOUD_PROJECT_ID/$CONTAINER_NAME:$LATEST_TAG..."
 
 n=0
 until [ $n -ge 10 ]
 do
-  docker push $REGISTRY/$PROJECT_PREFIX/$CONTAINER_NAME:$LATEST_TAG && break
+  docker push $REGISTRY/$GCLOUD_PROJECT_ID/$CONTAINER_NAME:$LATEST_TAG && break
   n=$[$n+1]
   sleep 1
   echo "Failed, retrying..."

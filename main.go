@@ -25,6 +25,7 @@ type Env struct {
 type Container struct {
 	Name                 string `json:"name"`
 	AppName              string `json:"appName"`
+	AppDir               string `json:"appDir"`
 	BuildContainerScript string `json:"buildContainerScript"`
 	BuildScriptArgs      string `json:"buildScriptArgs"`
 	ControllerFileName   string `json:"controllerFileName"`
@@ -400,6 +401,7 @@ func buildContainer(env *Env, podName string, cluster *Cluster) error {
 				env.Prefix,
 				env.GCloudProjectID,
 				cluster.Registry,
+				container.AppDir,
 				container.BuildScriptArgs,
 			)
 			var stderr bytes.Buffer
@@ -435,7 +437,7 @@ func pushContainer(env *Env, podName string, cluster *Cluster) error {
 	cmd := exec.Command(
 		fmt.Sprintf("%s/%s", SCRIPTS_DIR, "push_container.sh"),
 		containerName,
-		env.Prefix,
+		env.GCloudProjectID,
 		cluster.Registry,
 	)
 	cmd.Stdout = os.Stdout

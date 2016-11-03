@@ -3,15 +3,15 @@
 CONTEXT=$1
 CONTAINER_IMAGE_NAME=$2
 SITE_URL=$3
-PROJECT_PREFIX=$4
-GCLOUD_PROJECT_ID=$5
-REGISTRY=$6
-RELAY_APP_PATH=$7
+APPLICATION_ENV=$4
+PROJECT_PREFIX=$5
+GCLOUD_PROJECT_ID=$6
+REGISTRY=$7
+GO_APP_PATH=$8
+RELAY_APP_PATH=$9
 
 ./scripts/start_docker.sh
 kubectl config use-context $CONTEXT
-
-GO_APP_PATH=$GOPATH/src/github.com/$PROJECT_PREFIX/go-api/
 
 # 1 - generate schema
 cd $GO_APP_PATH
@@ -35,8 +35,8 @@ echo "----> Compiling go api binary..."
 # docker build --build-arg SITE_URL=$SITE_URL --build-arg APPLICATION_ENV="production" -t $IMAGE -t $TAG_PREFIX:$NEXT_VERSION .
 # docker tag -f $IMAGE $GCR_IMAGE:$NEXT_VERSION
 
-echo "----> Building $CONTAINER_IMAGE_NAME:$NEXT_VERSION for production..."
-docker build --build-arg SITE_URL=$SITE_URL --build-arg APPLICATION_ENV="production" -t $IMAGE .
+echo "----> Building $IMAGE for $APPLICATION_ENV"
+docker build --build-arg SITE_URL=$SITE_URL --build-arg APPLICATION_ENV=$APPLICATION_ENV -t $IMAGE .
 docker tag -f $IMAGE $GCR_IMAGE:latest
 
 echo "----> Built:"
