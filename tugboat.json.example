@@ -1,0 +1,5 @@
+{
+  "project" : "project name",
+  "id": "gce project id",
+  "prefix" : "project-name"
+}
