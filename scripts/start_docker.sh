@@ -9,11 +9,11 @@ then
   # docker-machine -D ssh docker-vm sudo /etc/init.d/docker restart
   # docker-machine start docker-vm
   # docker-machine restart docker-vm
-  printf "Starting docker-vm because it is not running..."
+  echo "Starting docker-vm because it is not running..."
   docker-machine start docker-vm
   eval "$(docker-machine env docker-vm)"
 else
-  printf "Configuring local docker-machine..."
+  echo "Configuring local docker-machine..."
   eval "$(docker-machine env docker-vm)"
   # printenv | ag DOCKER
 fi

@@ -30,10 +30,8 @@ type Container struct {
 	BuildScriptArgs      string `json:"buildScriptArgs"`
 	ControllerFileName   string `json:"controllerFileName"`
 	DeploymentName       string `json:"deploymentName"`
-	IsRegistryImage      bool   `json:"isRegistryImage"`
 	Specs                struct {
-		ContainerName  string `json:"containerName"`
-		DiskVolumeName string `json:"diskVolumeName"`
+		ContainerName string `json:"containerName"`
 	} `json:"specs"`
 }
 
@@ -151,6 +149,17 @@ func main() {
 			Action: func(c *cli.Context) error {
 				cluster := getClusterConfig(env, clusterName)
 				deployContainer(podName, cluster)
+				return nil
+			},
+		},
+		{
+			Name:    "starttls",
+			Aliases: []string{"tls"},
+			Flags:   flags,
+			Usage:   "start tls for specified app (and for cluster if necessary)",
+			Action: func(c *cli.Context) error {
+				cluster := getClusterConfig(env, clusterName)
+				startTLS(podName, cluster)
 				return nil
 			},
 		},
@@ -475,6 +484,31 @@ func deployContainer(podName string, cluster *Cluster) error {
 	return nil
 }
 
+func startTLS(podName string, cluster *Cluster) error {
+	log.Println("--------------------------------------")
+	log.Println("|        starting TLS                |")
+	log.Println("--------------------------------------")
+
+	container, err := getContainerByName(podName, cluster)
+	if err != nil {
+		return err
+	}
+
+	cmd := exec.Command(
+		fmt.Sprintf("%s/%s", SCRIPTS_DIR, "start_tls.sh"),
+		cluster.Context,
+		fmt.Sprintf("clusters/%s/specs", cluster.Name),
+		container.Name,
+	)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	if err := cmd.Run(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func removeImages(env *Env, name string, cluster *Cluster) error {
 	log.Println("-------------------------------------------------------------------------")
 	log.Println(">  remove images matching ", name)
@@ -491,6 +525,7 @@ func removeImages(env *Env, name string, cluster *Cluster) error {
 		fmt.Sprintf("%s/%s", SCRIPTS_DIR, "remove_docker_images.sh"),
 		containerName,
 		env.Prefix,
+		env.GCloudProjectID,
 	)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
