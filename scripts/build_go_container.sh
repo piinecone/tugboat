@@ -19,7 +19,7 @@ echo "----> Running update schema script..."
 go run bin/update_schema.go -out $RELAY_APP_PATH/data/
 
 # gather tags
-TAG_PREFIX=piinecone/$PROJECT_PREFIX/$CONTAINER_IMAGE_NAME
+TAG_PREFIX=$PROJECT_PREFIX/$CONTAINER_IMAGE_NAME
 IMAGE=$TAG_PREFIX:latest
 GCR_IMAGE=$REGISTRY/$GCLOUD_PROJECT_ID/$CONTAINER_IMAGE_NAME
 # NEXT_VERSION=$(docker images --format '{{.Repository}} {{.Tag}}' | ag $CONTAINER_IMAGE_NAME | ag 0 | awk {'print $2'} | sed 's/ //' | sort -r | awk {'print $1 += .01; exit'})
