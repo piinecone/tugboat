@@ -20,6 +20,9 @@ GCR_IMAGE=$REGISTRY/$GCLOUD_PROJECT_ID/$CONTAINER_IMAGE_NAME
 # build and tag image
 cd $APP_PATH
 echo "----> Building $IMAGE for $APPLICATION_ENV"
+if [ -f ./bin/before_docker.sh ]; then
+  ./bin/before_docker.sh
+fi
 docker build --build-arg SITE_URL=$SITE_URL --build-arg APPLICATION_ENV=$APPLICATION_ENV -t $IMAGE .
 docker tag -f $IMAGE $GCR_IMAGE:latest
 
