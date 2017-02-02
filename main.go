@@ -164,6 +164,16 @@ func main() {
 			},
 		},
 		{
+			Name:  "stoptls",
+			Flags: flags,
+			Usage: "stop tls for specified app (and for cluster if necessary)",
+			Action: func(c *cli.Context) error {
+				cluster := getClusterConfig(env, clusterName)
+				stopTLS(podName, cluster)
+				return nil
+			},
+		},
+		{
 			Name:    "context",
 			Aliases: []string{"c", "ctx"},
 			Flags:   flags,
@@ -496,6 +506,31 @@ func startTLS(podName string, cluster *Cluster) error {
 
 	cmd := exec.Command(
 		fmt.Sprintf("%s/%s", SCRIPTS_DIR, "start_tls.sh"),
+		cluster.Context,
+		fmt.Sprintf("clusters/%s/specs", cluster.Name),
+		container.Name,
+	)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	if err := cmd.Run(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func stopTLS(podName string, cluster *Cluster) error {
+	log.Println("--------------------------------------")
+	log.Println("|        stopping TLS                |")
+	log.Println("--------------------------------------")
+
+	container, err := getContainerByName(podName, cluster)
+	if err != nil {
+		return err
+	}
+
+	cmd := exec.Command(
+		fmt.Sprintf("%s/%s", SCRIPTS_DIR, "stop_tls.sh"),
 		cluster.Context,
 		fmt.Sprintf("clusters/%s/specs", cluster.Name),
 		container.Name,
