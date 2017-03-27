@@ -10,6 +10,7 @@ REGISTRY=$7
 GO_APP_PATH=$8
 RELAY_APP_PATH=$9
 
+./scripts/start_docker.sh
 kubectl config use-context $CONTEXT
 
 # 1 - generate schema
@@ -25,9 +26,10 @@ GCR_IMAGE=$REGISTRY/$GCLOUD_PROJECT_ID/$CONTAINER_IMAGE_NAME
 
 # 2 - build go api service container
 cd $GO_APP_PATH
+
 echo "----> Building $IMAGE for $APPLICATION_ENV"
 docker build \
-  --build-arg WORKER=false \
+  --build-arg WORKER=true \
   --build-arg SITE_URL=$SITE_URL \
   --build-arg APPLICATION_ENV=$APPLICATION_ENV \
   -t $IMAGE .

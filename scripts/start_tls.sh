@@ -12,6 +12,7 @@ set -e
 # temp
 # kubectl delete -f $SPECS_DIR/kube-lego-deployment.yaml
 # kubectl delete -f $SPECS_DIR/$APP_NAME-ingress.yaml
+# kubectl delete -f $SPECS_DIR/tls-configmap.yaml
 
 # kube lego
 kubectl apply -f $SPECS_DIR/tls-configmap.yaml

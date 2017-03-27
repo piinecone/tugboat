@@ -14,6 +14,7 @@ kubectl config use-context $CONTEXT
 printf 'Compling app for production...'
 cd $RELAY_APP_PATH
 rm -rf dist
+npm shrinkwrap
 npm run compile 2>&1
 
 printf 'Building docker container...'

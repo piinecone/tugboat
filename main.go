@@ -268,7 +268,9 @@ func main() {
 				remoteFilename := fmt.Sprintf("%s.sql", remoteMySQLName)
 				localFilename := fmt.Sprintf("%s_from_%s.sql", remoteMySQLName, cluster.Name)
 				getFileFromPod(remoteFilename, localFilename, podName, cluster)
-				reloadLocalSQL(localMySQLName, localFilename)
+				if len(localMySQLName) > 0 {
+					reloadLocalSQL(localMySQLName, localFilename)
+				}
 				return nil
 			},
 		},
