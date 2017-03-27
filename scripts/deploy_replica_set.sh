@@ -11,7 +11,6 @@ START=$(date "+%s")
 echo "container name: $CONTAINER_NAME"
 
 # get container version
-# ./scripts/start_docker.sh
 # 
 # LATEST_TAG=$(docker images --format '{{.Repository}} {{.Tag}}' | ag $CONTAINER_NAME | ag 0 | awk {'print $2'} | sed 's/ //' | sort -r | awk {'print $1; exit'})
 # echo "DEPLOYING VERSION: $LATEST_TAG"

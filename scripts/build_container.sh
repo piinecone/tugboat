@@ -9,7 +9,6 @@ GCLOUD_PROJECT_ID=$6
 REGISTRY=$7
 APP_PATH=$8
 
-./scripts/start_docker.sh
 kubectl config use-context $CONTEXT
 
 # container tags
@@ -24,7 +23,7 @@ if [ -f ./bin/before_docker.sh ]; then
   ./bin/before_docker.sh
 fi
 docker build --build-arg SITE_URL=$SITE_URL --build-arg APPLICATION_ENV=$APPLICATION_ENV -t $IMAGE .
-docker tag -f $IMAGE $GCR_IMAGE:latest
+docker tag $IMAGE $GCR_IMAGE:latest
 
 echo "----> Built:"
 docker images | ag "$CONTAINER_IMAGE_NAME" | ag "latest"

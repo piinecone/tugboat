@@ -4,8 +4,6 @@ CONTAINER_NAME=$1
 GCLOUD_PROJECT_ID=$2
 REGISTRY=$3
 
-./scripts/start_docker.sh
-
 # LATEST_TAG=$(docker images --format '{{.Repository}} {{.Tag}}' | ag $CONTAINER_NAME | ag 0 | awk {'print $2'} | sed 's/ //' | sort -r | awk {'print $1; exit'})
 LATEST_TAG="latest"
 

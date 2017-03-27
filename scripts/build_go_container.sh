@@ -10,7 +10,6 @@ REGISTRY=$7
 GO_APP_PATH=$8
 RELAY_APP_PATH=$9
 
-./scripts/start_docker.sh
 kubectl config use-context $CONTEXT
 
 # 1 - generate schema
@@ -29,15 +28,9 @@ cd $GO_APP_PATH
 echo "----> Compiling go api binary..."
 ./bin/build_linux.sh
 
-# docker build --build-arg SITE_URL=$SITE_URL -t $IMAGE .
-# TODO squash this image, it's huge
-# echo "----> Building $CONTAINER_IMAGE_NAME:$NEXT_VERSION for production..."
-# docker build --build-arg SITE_URL=$SITE_URL --build-arg APPLICATION_ENV="production" -t $IMAGE -t $TAG_PREFIX:$NEXT_VERSION .
-# docker tag -f $IMAGE $GCR_IMAGE:$NEXT_VERSION
-
 echo "----> Building $IMAGE for $APPLICATION_ENV"
 docker build --build-arg SITE_URL=$SITE_URL --build-arg APPLICATION_ENV=$APPLICATION_ENV -t $IMAGE .
-docker tag -f $IMAGE $GCR_IMAGE:latest
+docker tag $IMAGE $GCR_IMAGE:latest
 
 echo "----> Built:"
 # docker images | ag "$CONTAINER_IMAGE_NAME" | ag $NEXT_VERSION
