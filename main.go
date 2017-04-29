@@ -27,7 +27,7 @@ type Container struct {
 	AppName              string `json:"appName"`
 	AppDir               string `json:"appDir"`
 	BuildContainerScript string `json:"buildContainerScript"`
-	BuildScriptArgs      string `json:"buildScriptArgs"`
+	BuildArgs            string `json:"buildArgs"`
 	ControllerFileName   string `json:"controllerFileName"`
 	DeploymentName       string `json:"deploymentName"`
 	Specs                struct {
@@ -423,7 +423,7 @@ func buildContainer(env *Env, podName string, cluster *Cluster) error {
 				env.GCloudProjectID,
 				cluster.Registry,
 				container.AppDir,
-				container.BuildScriptArgs,
+				container.BuildArgs,
 			)
 			var stderr bytes.Buffer
 			cmd.Stdout = os.Stdout

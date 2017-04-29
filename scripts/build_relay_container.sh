@@ -8,18 +8,18 @@ PROJECT_PREFIX=$5
 GCLOUD_PROJECT_ID=$6
 REGISTRY=$7
 RELAY_APP_PATH=$8
+BUILD_ARGS=$9
 
 kubectl config use-context $CONTEXT
 
-printf 'Compling app for production...'
-cd $RELAY_APP_PATH
-rm -rf dist
-npm shrinkwrap
-npm run compile 2>&1
-
 printf 'Building docker container...'
+cd $RELAY_APP_PATH
 IMAGE=$PROJECT_PREFIX/$CONTAINER_IMAGE_NAME:latest
 GCR_IMAGE=$REGISTRY/$GCLOUD_PROJECT_ID/$CONTAINER_IMAGE_NAME:latest
 
-docker build -t $IMAGE .
+docker build \
+  $BUILD_ARGS \
+  --build-arg GRAPHQL_PROTOCOL=https \
+  --build-arg ENVIRONMENT=$APP_ENV \
+  -t $IMAGE .
 docker tag $IMAGE $GCR_IMAGE
