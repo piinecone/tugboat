@@ -8,7 +8,7 @@ REGISTRY=$3
 LATEST_TAG="latest"
 
 # echo "$(gcloud auth print-access-token)"
-docker login -e hughes.nick@gmail.com -u _token -p "$(gcloud auth print-access-token)" https://$REGISTRY
+docker login -u hughes.nick@gmail.com -u _token -p "$(gcloud auth print-access-token)" https://$REGISTRY
 # docker rmi $(docker images | grep none | awk {'print $3'})
 
 echo "Pushing image $REGISTRY/$GCLOUD_PROJECT_ID/$CONTAINER_NAME:$LATEST_TAG..."

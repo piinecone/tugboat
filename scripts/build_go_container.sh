@@ -20,10 +20,10 @@ GCR_IMAGE=$REGISTRY/$GCLOUD_PROJECT_ID/$CONTAINER_IMAGE_NAME
 cd $GO_APP_PATH
 echo "----> Building $IMAGE for $APPLICATION_ENV"
 docker build \
-  --no-cache \
   --build-arg WORKER=false \
   --build-arg SITE_URL=$SITE_URL \
   --build-arg APPLICATION_ENV=$APPLICATION_ENV \
+  --build-arg PUBLIC_URL=https://api.demo.dolphinai.com \
   -t $IMAGE .
 docker tag $IMAGE $GCR_IMAGE:latest
 
