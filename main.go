@@ -425,13 +425,15 @@ func buildContainer(env *Env, podName string, cluster *Cluster) error {
 				container.AppDir,
 				container.BuildArgs,
 			)
+
 			var stderr bytes.Buffer
 			cmd.Stdout = os.Stdout
-			// cmd.Stderr = os.Stderr
 			cmd.Stderr = &stderr
+
 			if err := cmd.Run(); err != nil {
 				return errors.New(stderr.String())
 			}
+
 			return nil
 		}
 	}

@@ -8,6 +8,7 @@ PROJECT_PREFIX=$5
 GCLOUD_PROJECT_ID=$6
 REGISTRY=$7
 GO_APP_PATH=$8
+BUILD_ARGS=$9
 
 kubectl config use-context $CONTEXT
 
@@ -20,6 +21,7 @@ GCR_IMAGE=$REGISTRY/$GCLOUD_PROJECT_ID/$CONTAINER_IMAGE_NAME
 cd $GO_APP_PATH
 echo "----> Building $IMAGE for $APPLICATION_ENV"
 docker build \
+  $BUILD_ARGS \
   --build-arg WORKER=false \
   --build-arg SITE_URL=$SITE_URL \
   --build-arg APPLICATION_ENV=$APPLICATION_ENV \
