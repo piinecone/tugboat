@@ -26,4 +26,4 @@ docker build --build-arg SITE_URL=$SITE_URL --build-arg APPLICATION_ENV=$APPLICA
 docker tag $IMAGE $GCR_IMAGE:latest
 
 echo "----> Built:"
-docker images | ag "$CONTAINER_IMAGE_NAME" | ag "latest"
+docker images | grep "$CONTAINER_IMAGE_NAME" | grep "latest"
